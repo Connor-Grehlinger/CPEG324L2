@@ -49,22 +49,23 @@ end record;
 type pattern_array is array (natural range <>) of pattern_type;
 constant patterns : pattern_array :=
 ----------- all shift register functionality -----------
--- ("input", 'lefit in', 'right in', 'clock', 'enable', "select", "output")
-(--("01010101", '0', '1', '0', '1', "00", "01010101"), 
---("00010000", '0', '1', '0', '1', "01", "00100000"), 
---("01010010", '1', '1', '0', '1', "01", "10100101"), 	
---("01010010", '0', '0', '0', '1', "10", "00100010"),	
---("01010000", '0', '1', '0', '1', "10", "10101000"),	
---("10000000", '1', '1', '0', '1', "10", "11000000"),
---("10000000", '1', '1', '0', '1', "01", "00000001"),
+-- ("input", 'left in', 'right in', 'clock', 'enable', "select", "output")
+(("01010101", '0', '1', '0', '1', "00", "01010101"), 
+("00010000", '0', '1', '0', '1', "01", "00100000"), 
+("01010010", '1', '1', '0', '1', "01", "10100101"), 	
+("01010010", '0', '0', '0', '1', "10", "00101001"),	
+("01010000", '0', '1', '0', '1', "10", "10101000"),	
+("10000000", '1', '1', '0', '1', "10", "11000000"),
+("10000000", '1', '1', '0', '1', "01", "00000001"),
 ----------- hold and load only -----------
---("11111111", '0', '1', '0', '1', "00", "11111111"), 
---("11110101", '0', '1', '0', '0', "00", "11110101"),
-("11110000", '0', '1', '0', '0', "11", "11110000"),
+("11111111", '0', '1', '0', '1', "00", "11111111"), 
+("11110101", '0', '1', '0', '0', "00", "11110101"),		-- bad
+("11110000", '0', '1', '0', '0', "11", "11110000"),		--bad
 ("11111111", '1', '0', '0', '1', "11", "00000000"));
 
 
-variable test_result : std_logic_vector(7 downto 0) := "00000000";
+
+--variable test_result : std_logic_vector(7 downto 0) := "00000000";
 
 begin
 --  Check each pattern.
@@ -81,16 +82,17 @@ enable <= patterns(n).enable;
 --  Wait for the results.
 wait for 20 ns;
 
-test_result := o;
-for i in 0 to test_result'LENGTH loop
-report "test_result("&integer'image(i)&") value is" &  std_logic'image(test_result(i));
-end loop;
+--test_result := o;
+--for i in 0 to test_result'LENGTH loop
+--report "test_result("&integer'image(i)&") value is" &  std_logic'image(test_result(i));
+--end loop;
 	   
 --  Check the outputs.
 assert o = patterns(n).o report "Error: bad output value" severity error;
+
 end loop;
 
-assert false report "End of test. Passed if no errors displayed" severity note;
+assert false report "End of 8 bit shift register test. Passed if no errors displayed" severity note;
 
 --  Wait forever; this will finish the simulation.
 wait;
