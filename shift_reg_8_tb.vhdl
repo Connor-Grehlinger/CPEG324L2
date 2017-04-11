@@ -64,7 +64,6 @@ constant patterns : pattern_array :=
 ("11111111", '1', '0', '0', '1', "11", "00000000"));
 
 
-
 --variable test_result : std_logic_vector(7 downto 0) := "00000000";
 
 begin
